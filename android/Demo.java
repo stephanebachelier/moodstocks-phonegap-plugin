@@ -71,9 +71,10 @@ public class Demo extends DroidGap {
     	
     	// this case is occurred when the scanActivity fails at launching
     	// the failure of launching scanner is often caused by the camera's unavailability
-    	// In this case we choose to kill the app directly
+    	// in this case we retrieve & reload the web view before inserting it back
     	if (scanActivityStarted && (super.appView.getParent() != null)) {
-    		finish();
+    		((ViewManager)super.appView.getParent()).removeView(super.appView);
+    		super.appView.reload();
     	}
     	
     	// Reset the web view to root container when we dismiss the Moodstocks scanner 
