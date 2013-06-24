@@ -37,9 +37,8 @@ import android.util.Log;
 
 import com.moodstocks.android.MoodstocksError;
 import com.moodstocks.android.Scanner;
-import com.moodstocks.android.Sync;
 
-public class MoodstocksPlugin extends CordovaPlugin implements Sync.Listener {
+public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListener {
 
 	public static final String TAG = "MoodstocksPlugin";
 
