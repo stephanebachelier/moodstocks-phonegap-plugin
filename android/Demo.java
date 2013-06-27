@@ -23,10 +23,15 @@
 
 package com.moodstocks.phonegap.demo;
 
+import org.apache.cordova.CordovaChromeClient;
+import org.apache.cordova.CordovaWebViewClient;
+import org.apache.cordova.DroidGap;
+import org.apache.cordova.IceCreamCordovaWebViewClient;
+import org.apache.cordova.api.CordovaPlugin;
+
 import android.content.Intent;
 import android.os.Bundle;
-import org.apache.cordova.*;
-import org.apache.cordova.api.CordovaPlugin;
+import android.view.ViewManager;
 
 import com.moodstocks.phonegap.plugin.MoodstocksWebView;
 
