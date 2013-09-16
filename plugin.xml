@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.moodstocks.scanner"
+    version="0.0.1">
+    <name>Moodstocks</name>
+    <description>Cordova Moodstocks Plugin</description>
+    <license>MIT</license>
+    <keywords>cordova,moodstocks</keywords>
+
+    <js-module src="www/MoodstocksPlugin.js" name="Moodstocks">
+        <clobbers target="Moodstocks" />
+    </js-module>
+
+     <!-- ios -->
+     <platform name="ios">
+         <config-file target="config.xml" parent="/*">
+             <feature name="Moodstocks">
+                 <param name="ios-package" value="Moodstocks" />
+             </feature>
+         </config-file>
+
+         <header-file src="src/ios/MoodstocksPlugin.h" />
+         <source-file src="src/ios/MoodstocksPlugin.m" />
+         <header-file src="src/ios/MSHandler.h" />
+         <source-file src="src/ios/MSHandler.m" />
+         <header-file src="src/ios/MSScannerController.h" />
+         <source-file src="src/ios/MSScannerController.m" />
+     </platform>
+
+</plugin>
