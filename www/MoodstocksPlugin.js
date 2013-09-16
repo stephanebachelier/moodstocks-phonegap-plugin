@@ -131,3 +131,5 @@ var MoodstocksPlugin = {
         return cordova.exec(success, fail, "MoodstocksPlugin", "dismiss", []);
     }
 }
+
+module.exports = MoodstocksPlugin;
