@@ -2,12 +2,20 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="com.moodstocks.scanner"
-    version="0.0.1">
-    <name>Moodstocks</name>
-    <description>Cordova Moodstocks Plugin</description>
+    id="com.moodstocks.phonegap"
+    version="1.0.0">
+    <name>Moodstocks SDK</name>
+    <description>Moodstocks PhoneGap plugins helps you to integrate Moodstocks
+        SDK in your PhoneGap application. The Moodstocks SDK provides a scanner
+        for mobile devices. It recognizes both barcodes and images. Scanning
+        operates on the client-side which lets you create nice augmented reality
+        overlays. Also it even works off-line thanks to a built-in, easy-to-use
+        on-device image signatures synchronization. (http://www.moodstocks.com/)
+    </description>
+    <author>Moodstocks</author>
     <license>MIT</license>
-    <keywords>cordova,moodstocks</keywords>
+    <keywords>moodstocks, image-recognition, ios, android, augmented-reality,
+        barcode, qrcode</keywords>
 
     <js-module src="www/MoodstocksPlugin.js" name="Moodstocks">
         <clobbers target="Moodstocks" />
