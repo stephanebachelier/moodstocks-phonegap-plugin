@@ -10,7 +10,6 @@ use it until we fully merge it to the master branch.
 Here we suppose you are already using the [Cordova CLI (command line interface)](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface) and familiar with its basic commands.
 
 1. Create a HelloWorld project for iOS platform
-
 ```console
 cordova create hello com.example.hello HelloWorld
 cd hello
@@ -18,46 +17,41 @@ cordova platform add ios
 ```
 
 2. Clone the [Moodstocks Phonegap plugin repo](https://github.com/Moodstocks/moodstocks-phonegap-plugin)
-
 ```console
 git clone https://github.com/Moodstocks/moodstocks-phonegap-plugin
 ```
 
 3. Checkout the [phonegap3 branch](https://github.com/Moodstocks/moodstocks-phonegap-plugin/tree/phonegap3)
-
 ```console
 git checkout phonegap3
 ```
 
 4. Add the plugin to your project
-
 ```
 cordova plugin add <PATH TO THE CLONED PLUGIN REPO>`
 ```
 
 5. Build your iOS app to generate the XCode project:
-
 ```console
 cordova build ios
 ```
 
 6. Open your project in Xcode
-
 ```console
 open platforms/ios/HelloWorld.xcodeproj/
 ```
 
 7. [Setup Moodstocks SDK for iOS](https://developers.moodstocks.com/doc/tuto-ios/1)
 
-8. Go to `Build Phases > Link Binary With Libraries` amd make sure following
-frameworks exist in your project
+8. Go to `Build Phases > Link Binary With Libraries` and make sure following
+frameworks exist in the project
   * `CoreMedia.framework`
   * `AVFoundation.framework`
   * `CoreVideo.framework`
   * `QuartzCore.framework`
 
 9. If necessary, disable [ARC](http://en.wikipedia.org/wiki/Automatic_Reference_Counting)
-for the moodstocks plugin files. In `Build Phases > Compile Sources`, add the
+for the plugin source files. In `Build Phases > Compile Sources`, add the
 `-fno-objc-arc` compiler flag to the following files:
   * `MoodstocksPlugin.m`
   * `MSHandler.m`
