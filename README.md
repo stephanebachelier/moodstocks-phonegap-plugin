@@ -3,30 +3,67 @@
 This is the working-in-progress branch for supporting PhoneGap 3.0. Please don't
 use it until we fully merge it to the master branch.
 
-## Setup
+## Setting up with Cordova 3.0+
 
-First you need to download the SDK through [your developer account](https://developers.moodstocks.com/apps).
+### Using Cordova CLI
 
-### iOS
-1. Clone the plugin from the [github repo](https://github.com/Moodstocks/moodstocks-phonegap-plugin).
-2. Checkout the [phonegap3 branch](https://github.com/Moodstocks/moodstocks-phonegap-plugin/tree/phonegap3).
-3. Add the plugin to your project using the cordova command:  
-`cordova plugin add <PATH TO THE CLONED PLUGIN REPO>`
-4. Reconfigure the Xcode project using the command:  
-`cordova prepare`
-5. Add the cordova sdk files to your Xcode project (including `libmoodstocks-sdk.a`).
-  * Don't just copy the files in the folder, link them in the project.
-6. Add the following frameworks to your project in `Build Phases > Link Binary With Libraries`:
+Here we suppose you are already using the [Cordova CLI (command line interface)](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface) and familiar with its basic commands.
+
+1. Create a HelloWorld project for iOS platform
+
+```console
+cordova create hello com.example.hello HelloWorld
+cd hello
+cordova platform add ios
+```
+
+2. Clone the [Moodstocks Phonegap plugin repo](https://github.com/Moodstocks/moodstocks-phonegap-plugin)
+
+```console
+git clone https://github.com/Moodstocks/moodstocks-phonegap-plugin
+```
+
+3. Checkout the [phonegap3 branch](https://github.com/Moodstocks/moodstocks-phonegap-plugin/tree/phonegap3)
+
+```console
+git checkout phonegap3
+```
+
+4. Add the plugin to your project
+
+```
+cordova plugin add <PATH TO THE CLONED PLUGIN REPO>`
+```
+
+5. Build your iOS app to generate the XCode project:
+
+```console
+cordova build ios
+```
+
+6. Open your project in Xcode
+
+```console
+open platforms/ios/HelloWorld.xcodeproj/
+```
+
+7. [Setup Moodstocks SDK for iOS](https://developers.moodstocks.com/doc/tuto-ios/1)
+
+8. Go to `Build Phases > Link Binary With Libraries` amd make sure following
+frameworks exist in your project
   * `CoreMedia.framework`
   * `AVFoundation.framework`
   * `CoreVideo.framework`
   * `QuartzCore.framework`
-7. If necessary, disable [ARC](http://en.wikipedia.org/wiki/Automatic_Reference_Counting) for the moodstocks plugin files.
-  * In `Build Phases > Compile Sources`, add the `-fno-objc-arc` compiler flag to the following files:
-     * `MoodstocksPlugin.m`
-     * `MSHandler.m`
-     * `MSScannerController.m`
-8. You're done !
+
+9. If necessary, disable [ARC](http://en.wikipedia.org/wiki/Automatic_Reference_Counting)
+for the moodstocks plugin files. In `Build Phases > Compile Sources`, add the
+`-fno-objc-arc` compiler flag to the following files:
+  * `MoodstocksPlugin.m`
+  * `MSHandler.m`
+  * `MSScannerController.m`
+
+Now you can start using MoodstocksPlugin in your project!
 
 ## Help
 
