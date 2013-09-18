@@ -17,15 +17,15 @@
     <keywords>moodstocks, image-recognition, ios, android, augmented-reality,
         barcode, qrcode</keywords>
 
-    <js-module src="www/MoodstocksPlugin.js" name="Moodstocks">
-        <clobbers target="Moodstocks" />
+    <js-module src="www/MoodstocksPlugin.js" name="MoodstocksPlugin">
+        <clobbers target="MoodstocksPlugin" />
     </js-module>
 
      <!-- ios -->
      <platform name="ios">
          <config-file target="config.xml" parent="/*">
-             <feature name="Moodstocks">
-                 <param name="ios-package" value="Moodstocks" />
+             <feature name="MoodstocksPlugin">
+                 <param name="ios-package" value="MoodstocksPlugin" />
              </feature>
          </config-file>
 
