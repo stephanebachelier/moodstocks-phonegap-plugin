@@ -32,8 +32,7 @@
 // -------------------------------------------------
 // Moodstocks API key/secret pair
 // -------------------------------------------------
-#define MS_API_KEY @"apiKey"
-#define MS_API_SEC @"apiSecret"
+#include "MoodstocksAPI.h"
 
 @class MSScannerController;
 @implementation MoodstocksPlugin
