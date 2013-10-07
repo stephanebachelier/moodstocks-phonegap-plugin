@@ -28,6 +28,10 @@
 
 #include "moodstocks_sdk.h"
 
+@interface MSScannerController ()
+- (void)handleVideoRotation;
+@end
+
 @implementation MSScannerController
 
 - (id)initWithHandler:(MSHandler *)handler scanOptions:(NSInteger)scanOptions plugin:(MoodstocksPlugin *)plugin {
@@ -41,6 +45,7 @@
 #if MS_SDK_REQUIREMENTS
         [_scannerSession setScanOptions:_scanOptions];
         [_scannerSession setDelegate:self];
+        [_scannerSession setUseDeviceOrientation:YES];
 
         _plugin = plugin;
         _resultOverlay = plugin.webView;
@@ -61,10 +66,7 @@
 - (void)loadView {
     [super loadView];
 
-    CGFloat w = self.view.frame.size.width;
-    CGFloat h = self.view.frame.size.height;
-
-    CGRect videoFrame = CGRectMake(0, 0, w, h);
+    CGRect videoFrame = [[UIScreen mainScreen] bounds];
     _videoPreview = [[[UIView alloc] initWithFrame:videoFrame] autorelease];
     _videoPreview.backgroundColor = [UIColor blackColor];
     _videoPreview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -88,12 +90,17 @@
 
     CALayer *videoPreviewLayer = [_videoPreview layer];
     [videoPreviewLayer setMasksToBounds:YES];
-
-    CALayer *captureLayer = [_scannerSession previewLayer];
-    [captureLayer setFrame:[_videoPreview bounds]];
-
+    
+    // force preview layer orientation to device orientation
+    AVCaptureVideoPreviewLayer *captureLayer = (AVCaptureVideoPreviewLayer *)[_scannerSession previewLayer];
+    [captureLayer layoutSublayers];
+    captureLayer.frame = self.view.bounds;
+    
+    // update video orientation
+    [[captureLayer connection] setVideoOrientation:[[UIDevice currentDevice] orientation]];
+    
     [videoPreviewLayer insertSublayer:captureLayer below:[[videoPreviewLayer sublayers] objectAtIndex:0]];
-
+    
     [_scannerSession startCapture];
 
     _toolbar = [[[UIToolbar alloc] init] autorelease];
@@ -121,21 +128,49 @@
     [self.view addSubview:_toolbar];
 }
 
+- (void)viewWillLayoutSubviews
+{
+    [self handleVideoRotation];
+}
+
 #pragma mark -
 #pragma mark Autorotation setting
 
-// Here we block the scanner in portrait orientation
+// IOS 6
 - (BOOL)shouldAutorotate {
-    return NO;
+    return self.presentingViewController.shouldAutorotate;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskPortrait;
+    return self.presentingViewController.supportedInterfaceOrientations;
 }
 
+// IOS < 6
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return NO;
+    // Return YES for supported orientations
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)orientation duration:(NSTimeInterval)duration
+{
+    [CATransaction begin];
+    [self handleVideoRotation];
+    [CATransaction commit];
+    
+    [super willAnimateRotationToInterfaceOrientation:orientation duration:duration];
+}
+
+- (void)handleVideoRotation
+{
+    AVCaptureVideoPreviewLayer *captureVideoPreviewLayer = (AVCaptureVideoPreviewLayer *)[_scannerSession previewLayer];
+    
+    captureVideoPreviewLayer.frame = self.view.bounds;
+    [captureVideoPreviewLayer layoutSublayers];
+    
+    // update video orientation
+    [[captureVideoPreviewLayer connection] setVideoOrientation:[[UIDevice currentDevice] orientation]];
+}
+
 
 #pragma mark
 
