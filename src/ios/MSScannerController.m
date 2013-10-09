@@ -93,9 +93,7 @@
     [captureLayer setFrame:[_videoPreview bounds]];
 
     [videoPreviewLayer insertSublayer:captureLayer below:[[videoPreviewLayer sublayers] objectAtIndex:0]];
-
-    [_scannerSession startCapture];
-
+    
     _toolbar = [[[UIToolbar alloc] init] autorelease];
     _toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     _toolbar.barStyle = UIBarStyleBlack;
@@ -119,6 +117,12 @@
     [_toolbar setFrame:rectArea];
 
     [self.view addSubview:_toolbar];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [_scannerSession startCapture];
 }
 
 #pragma mark -
