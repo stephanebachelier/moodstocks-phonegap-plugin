@@ -29,7 +29,7 @@
 #include "moodstocks_sdk.h"
 
 @interface MSScannerController ()
-- (void)handleVideoRotation;
+- (void)layoutCaptureVideoPreviewLayer;
 @end
 
 @implementation MSScannerController
@@ -48,7 +48,6 @@
         [_scannerSession setUseDeviceOrientation:YES];
 
         _plugin = plugin;
-        _resultOverlay = plugin.webView;
 #endif
     }
 
@@ -72,14 +71,6 @@
     _videoPreview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _videoPreview.autoresizesSubviews = YES;
     [self.view addSubview:_videoPreview];
-
-    // Set up html overlay
-    _originBGColor = _resultOverlay.backgroundColor;
-    _resultOverlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    _resultOverlay.opaque = NO;
-    _resultOverlay.scrollView.scrollEnabled = NO;
-
-    [self.view addSubview:_resultOverlay];
 }
 
 - (void)viewDidLoad {
@@ -130,7 +121,7 @@
 
 - (void)viewWillLayoutSubviews
 {
-    [self handleVideoRotation];
+    [self layoutCaptureVideoPreviewLayer];
 }
 
 #pragma mark -
@@ -154,23 +145,42 @@
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)orientation duration:(NSTimeInterval)duration
 {
     [CATransaction begin];
-    [self handleVideoRotation];
+    [self layoutCaptureVideoPreviewLayer];
     [CATransaction commit];
     
     [super willAnimateRotationToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)handleVideoRotation
+- (void)layoutCaptureVideoPreviewLayer
 {
-    AVCaptureVideoPreviewLayer *captureVideoPreviewLayer = (AVCaptureVideoPreviewLayer *)[_scannerSession previewLayer];
+    if (!captureVideoPreviewLayer) {
+         captureVideoPreviewLayer = (AVCaptureVideoPreviewLayer *)[_scannerSession previewLayer];
+    }
     
     captureVideoPreviewLayer.frame = self.view.bounds;
     [captureVideoPreviewLayer layoutSublayers];
     
     // update video orientation
-    [[captureVideoPreviewLayer connection] setVideoOrientation:[[UIDevice currentDevice] orientation]];
+    [[captureVideoPreviewLayer connection] setVideoOrientation:[self captureVideoOrientation]];
 }
 
+- (AVCaptureVideoOrientation)captureVideoOrientation
+{
+    AVCaptureVideoOrientation orientation = AVCaptureVideoOrientationPortrait;
+    
+    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
+    
+    if (deviceOrientation == UIDeviceOrientationPortrait)
+        orientation = AVCaptureVideoOrientationPortrait;
+    else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
+        orientation = AVCaptureVideoOrientationPortraitUpsideDown;
+    else if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
+        orientation = AVCaptureVideoOrientationLandscapeRight;
+    else if (deviceOrientation == UIDeviceOrientationLandscapeRight)
+        orientation = AVCaptureVideoOrientationLandscapeLeft;
+    
+    return orientation;
+}
 
 #pragma mark
 
@@ -188,15 +198,6 @@
     [_scannerSession cancel];
 
     [self.handler scanDismissed];
-
-    _resultOverlay.backgroundColor = _originBGColor;
-    _resultOverlay.opaque = YES;
-    _resultOverlay.scrollView.scrollEnabled = YES;
-
-    [_resultOverlay removeFromSuperview];
-    [_plugin.viewController.view addSubview:_resultOverlay];
-
-    [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - MSScannerSessionDelegate
