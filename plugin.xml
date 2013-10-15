@@ -35,6 +35,12 @@
          <source-file src="src/ios/MSHandler.m" />
          <header-file src="src/ios/MSScannerController.h" />
          <source-file src="src/ios/MSScannerController.m" />
+         <header-file src="src/ios/MoodstocksAPI.h" />
+
+         <framework src="CoreMedia.framework" />
+         <framework src="AVFoundation.framework" />
+         <framework src="CoreVideo.framework" />
+         <framework src="QuartzCore.framework" />
      </platform>
 
 </plugin>
