@@ -92,11 +92,19 @@
 - (void)scan:(CDVInvokedUrlCommand *) command {
     // Get the scan options
     NSInteger scanOptions = [[command.arguments objectAtIndex:0] integerValue];
+    BOOL useDeviceOrientation = [[command.arguments objectAtIndex:1] integerValue];
+    BOOL noPartialMatching = [[command.arguments objectAtIndex:2] integerValue];
+    BOOL smallTargetSupport = [[command.arguments objectAtIndex:3] integerValue];
 
     MSHandler *scanHandler = [[MSHandler alloc] initWithPlugin:self callback:command.callbackId];
 
-    // Initialize the scanner view controller
-    self.scanner = [[MSScannerController alloc] initWithHandler:scanHandler scanOptions:scanOptions plugin:self];
+   // Initialize the scanner view controller
+    self.scanner = [[MSScannerController alloc] initWithHandler:scanHandler
+                                                    scanOptions:scanOptions
+                                           useDeviceOrientation:useDeviceOrientation
+                                              noPartialMatching:noPartialMatching
+                                             smallTargetSupport:smallTargetSupport
+                                                         plugin:self];
 
     [self.viewController presentModalViewController:self.scanner animated:YES];
 

@@ -101,7 +101,22 @@ var MoodstocksPlugin = {
             }
         }
 
-        return cordova.exec(successWrapper, fail, "MoodstocksPlugin", "scan", [formats]);
+        var useDeviceOrientation = false;
+        var noPartialMatching = false;
+        var smallTargetSupport = false;
+
+        if (scanOptions["useDeviceOrientation"]) {
+            useDeviceOrientation = scanOptions["useDeviceOrientation"];
+        }
+        if (scanOptions["noPartialMatching"]) {
+            noPartialMatching = scanOptions["noPartialMatching"];
+        }
+        if (scanOptions["smallTargetSupport"]) {
+            smallTargetSupport = scanOptions["smallTargetSupport"];
+        }
+
+        return cordova.exec(successWrapper, fail, "MoodstocksPlugin", "scan",
+            [formats, useDeviceOrientation, noPartialMatching, smallTargetSupport]);
     },
 
     // pause the scan session

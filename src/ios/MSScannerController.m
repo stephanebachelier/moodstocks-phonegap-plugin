@@ -30,7 +30,12 @@
 
 @implementation MSScannerController
 
-- (id)initWithHandler:(MSHandler *)handler scanOptions:(NSInteger)scanOptions plugin:(MoodstocksPlugin *)plugin {
+- (id)initWithHandler:(MSHandler *)handler
+          scanOptions:(NSInteger)scanOptions
+ useDeviceOrientation:(BOOL)useDeviceOrientation
+    noPartialMatching:(BOOL)noPartialMatching
+   smallTargetSupport:(BOOL)smallTargetSupport
+               plugin:(MoodstocksPlugin *)plugin {
     self = [super init];
 
     if (self) {
@@ -41,6 +46,9 @@
 #if MS_SDK_REQUIREMENTS
         [_scannerSession setScanOptions:_scanOptions];
         [_scannerSession setDelegate:self];
+        [_scannerSession setUseDeviceOrientation:useDeviceOrientation];
+        [_scannerSession setNoPartialMatching:noPartialMatching];
+        [_scannerSession setSmallTargetSupport:smallTargetSupport];
 
         _plugin = plugin;
         _resultOverlay = plugin.webView;
@@ -93,7 +101,7 @@
     [captureLayer setFrame:[_videoPreview bounds]];
 
     [videoPreviewLayer insertSublayer:captureLayer below:[[videoPreviewLayer sublayers] objectAtIndex:0]];
-    
+
     _toolbar = [[[UIToolbar alloc] init] autorelease];
     _toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     _toolbar.barStyle = UIBarStyleBlack;
