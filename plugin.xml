@@ -29,14 +29,16 @@
              </feature>
          </config-file>
 
+         <!-- header & source files -->
          <header-file src="src/ios/MoodstocksPlugin.h" />
-         <source-file src="src/ios/MoodstocksPlugin.m" />
+         <source-file src="src/ios/MoodstocksPlugin.m" compiler-flags="-fno-objc-arc" />
          <header-file src="src/ios/MSHandler.h" />
-         <source-file src="src/ios/MSHandler.m" />
+         <source-file src="src/ios/MSHandler.m" compiler-flags="-fno-objc-arc" />
          <header-file src="src/ios/MSScannerController.h" />
-         <source-file src="src/ios/MSScannerController.m" />
+         <source-file src="src/ios/MSScannerController.m" compiler-flags="-fno-objc-arc" />
          <header-file src="src/ios/MoodstocksAPI.h" />
 
+         <!-- system frameworks -->
          <framework src="CoreMedia.framework" />
          <framework src="AVFoundation.framework" />
          <framework src="CoreVideo.framework" />
