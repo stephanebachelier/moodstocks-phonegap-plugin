@@ -139,7 +139,7 @@
 // IOS < 6
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)orientation duration:(NSTimeInterval)duration
@@ -153,9 +153,7 @@
 
 - (void)layoutCaptureVideoPreviewLayer
 {
-    if (!captureVideoPreviewLayer) {
-         captureVideoPreviewLayer = (AVCaptureVideoPreviewLayer *)[_scannerSession previewLayer];
-    }
+    AVCaptureVideoPreviewLayer *captureVideoPreviewLayer = (AVCaptureVideoPreviewLayer *)[_scannerSession previewLayer];
     
     captureVideoPreviewLayer.frame = self.view.bounds;
     [captureVideoPreviewLayer layoutSublayers];
@@ -198,6 +196,7 @@
     [_scannerSession cancel];
 
     [self.handler scanDismissed];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - MSScannerSessionDelegate
