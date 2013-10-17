@@ -161,6 +161,9 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 		Intent scanIntent = new Intent(cordova.getActivity(), MoodstocksScanActivity.class);
 		scanIntent.putExtra("com.moodstocks.phonegap.plugin", "MoodstocksScanActivity");
 		scanIntent.putExtra("scanOptions", args.getInt(0));
+		scanIntent.putExtra("useDeviceOrientation", args.getBoolean(1));
+		scanIntent.putExtra("noPartialMatching", args.getBoolean(2));
+		scanIntent.putExtra("smallTargetSupport", args.getBoolean(3));
 
 		// NOTE: the original startActivityForResult() will pause PhoneGap app's js code
 		// the one we use here is a override-version
