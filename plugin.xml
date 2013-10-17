@@ -21,28 +21,69 @@
         <clobbers target="MoodstocksPlugin" />
     </js-module>
 
-     <!-- ios -->
-     <platform name="ios">
-         <config-file target="config.xml" parent="/*">
-             <feature name="MoodstocksPlugin">
-                 <param name="ios-package" value="MoodstocksPlugin" />
-             </feature>
-         </config-file>
+    <!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="MoodstocksPlugin">
+                <param name="ios-package" value="MoodstocksPlugin" />
+            </feature>
+        </config-file>
 
-         <!-- header & source files -->
-         <header-file src="src/ios/MoodstocksPlugin.h" />
-         <source-file src="src/ios/MoodstocksPlugin.m" compiler-flags="-fno-objc-arc" />
-         <header-file src="src/ios/MSHandler.h" />
-         <source-file src="src/ios/MSHandler.m" compiler-flags="-fno-objc-arc" />
-         <header-file src="src/ios/MSScannerController.h" />
-         <source-file src="src/ios/MSScannerController.m" compiler-flags="-fno-objc-arc" />
-         <header-file src="src/ios/MoodstocksAPI.h" />
+        <!-- header & source files -->
+        <header-file src="src/ios/MoodstocksPlugin.h" />
+        <source-file src="src/ios/MoodstocksPlugin.m" compiler-flags="-fno-objc-arc" />
+        <header-file src="src/ios/MSHandler.h" />
+        <source-file src="src/ios/MSHandler.m" compiler-flags="-fno-objc-arc" />
+        <header-file src="src/ios/MSScannerController.h" />
+        <source-file src="src/ios/MSScannerController.m" compiler-flags="-fno-objc-arc" />
+        <header-file src="src/ios/MoodstocksAPI.h" />
 
-         <!-- system frameworks -->
-         <framework src="CoreMedia.framework" />
-         <framework src="AVFoundation.framework" />
-         <framework src="CoreVideo.framework" />
-         <framework src="QuartzCore.framework" />
-     </platform>
+        <!-- system frameworks -->
+        <framework src="CoreMedia.framework" />
+        <framework src="AVFoundation.framework" />
+        <framework src="CoreVideo.framework" />
+        <framework src="QuartzCore.framework" />
+    </platform>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="MoodstocksPlugin">
+                <param name="android-package" value="com.moodstocks.phonegap.plugin.MoodstocksPlugin" />
+            </feature>
+        </config-file>
+
+        <!-- uses permission & feature -->
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.CAMERA" />
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-feature
+                android:name="android.hardware.camera"
+                android:required="false" />
+            <uses-feature
+                android:name="android.hardware.camera.any"
+                android:required="false" />
+        </config-file>
+
+        <!-- activity -->
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity
+                android:name="com.moodstocks.phonegap.plugin.MoodstocksScanActivity"
+                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            </activity>
+        </config-file>
+
+        <!-- source files -->
+        <source-file src="src/android/MoodstocksPlugin.java"
+            target-dir="src/com/moodstocks/phonegap/plugin" />
+        <source-file src="src/android/MoodstocksScanActivity.java"
+            target-dir="src/com/moodstocks/phonegap/plugin" />
+        <source-file src="src/android/MoodstocksWebView.java"
+            target-dir="src/com/moodstocks/phonegap/plugin" />
+        <source-file src="src/android/scan.xml"
+            target-dir="res/layout" />
+
+    </platform>
 
 </plugin>
