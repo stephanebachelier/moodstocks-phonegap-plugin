@@ -41,6 +41,7 @@
     if (self) {
         self.handler = handler;
         _scanOptions = scanOptions;
+        _useDeviceOrientation = useDeviceOrientation;
 
         _scannerSession = [[MSScannerSession alloc] initWithScanner:[MSScanner sharedInstance]];
 #if MS_SDK_REQUIREMENTS
@@ -69,17 +70,15 @@
 - (void)loadView {
     [super loadView];
 
-    CGFloat w = self.view.frame.size.width;
-    CGFloat h = self.view.frame.size.height;
-
-    CGRect videoFrame = CGRectMake(0, 0, w, h);
-    _videoPreview = [[[UIView alloc] initWithFrame:videoFrame] autorelease];
+    CGRect scannerFrame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));
+    _videoPreview = [[[UIView alloc] initWithFrame:scannerFrame] autorelease];
     _videoPreview.backgroundColor = [UIColor blackColor];
     _videoPreview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _videoPreview.autoresizesSubviews = YES;
     [self.view addSubview:_videoPreview];
 
     // Set up html overlay
+    [_resultOverlay setFrame:scannerFrame];
     _originBGColor = _resultOverlay.backgroundColor;
     _resultOverlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     _resultOverlay.opaque = NO;
@@ -97,7 +96,7 @@
     CALayer *videoPreviewLayer = [_videoPreview layer];
     [videoPreviewLayer setMasksToBounds:YES];
 
-    CALayer *captureLayer = [_scannerSession previewLayer];
+    AVCaptureVideoPreviewLayer *captureLayer = (AVCaptureVideoPreviewLayer *)[_scannerSession previewLayer];
     [captureLayer setFrame:[_videoPreview bounds]];
 
     [videoPreviewLayer insertSublayer:captureLayer below:[[videoPreviewLayer sublayers] objectAtIndex:0]];
@@ -136,17 +135,25 @@
 #pragma mark -
 #pragma mark Autorotation setting
 
-// Here we block the scanner in portrait orientation
 - (BOOL)shouldAutorotate {
-    return NO;
+    if (_useDeviceOrientation)
+        return self.presentingViewController.shouldAutorotate;
+    else
+        return NO;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskPortrait;
+    if (_useDeviceOrientation)
+        return self.presentingViewController.supportedInterfaceOrientations;
+    else
+        return UIInterfaceOrientationMaskPortrait;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return NO;
+    if (_useDeviceOrientation)
+        return YES;
+    else
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark
@@ -171,6 +178,11 @@
     _resultOverlay.scrollView.scrollEnabled = YES;
 
     [_resultOverlay removeFromSuperview];
+
+    // insert web view back into the MainViewController
+    CGRect mainFrame = CGRectMake(0, 0, CGRectGetWidth(_plugin.viewController.view.bounds),
+                                  CGRectGetHeight(_plugin.viewController.view.bounds));
+    [_resultOverlay setFrame:mainFrame];
     [_plugin.viewController.view addSubview:_resultOverlay];
 
     [self dismissModalViewControllerAnimated:YES];
@@ -199,5 +211,44 @@
 }
 
 #endif
+
+#pragma mark - Orientation
+
+- (void)viewWillLayoutSubviews
+{
+    [self updateCaptureWithInterfaceOrientation:self.interfaceOrientation];
+}
+
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)orientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:orientation duration:duration];
+
+    [self updateCaptureWithInterfaceOrientation:orientation];
+}
+
+- (void)updateCaptureWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    AVCaptureVideoPreviewLayer *captureLayer = (AVCaptureVideoPreviewLayer *) [_scannerSession previewLayer];
+
+    captureLayer.frame = self.view.bounds;
+
+    // AVCapture orientation is the same as UIInterfaceOrientation
+    switch (interfaceOrientation) {
+        case UIInterfaceOrientationPortrait:
+            [[captureLayer connection] setVideoOrientation:AVCaptureVideoOrientationPortrait];
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            [[captureLayer connection] setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            [[captureLayer connection] setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            [[captureLayer connection] setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
+            break;
+        default:
+            break;
+    }
+}
 
 @end
