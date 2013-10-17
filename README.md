@@ -41,7 +41,7 @@ phonegap build ios
 open platforms/ios/HelloWorld.xcodeproj/
 ```
 
-7. [Setup Moodstocks SDK for iOS](https://developers.moodstocks.com/doc/tuto-ios/1)
+7. [Setup Moodstocks SDK for iOS](https://moodstocks.com/documentation/user-guides/ios-guide/#setup)
 
 Now you can start using MoodstocksPlugin in your project!
 
