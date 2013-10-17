@@ -111,6 +111,9 @@ public class MoodstocksScanActivity extends Activity implements ScannerSession.L
 	    // Get scan options
 	    ScanOptions = getIntent().getExtras().getInt("scanOptions");
 	    session.setOptions(ScanOptions);
+	    session.useDeviceOrientation = getIntent().getExtras().getBoolean("useDeviceOrientation");
+	    session.noPartialMatching = getIntent().getExtras().getBoolean("noPartialMatching");
+	    session.smallTargetSupport = getIntent().getExtras().getBoolean("smallTargetSupport");
 	}
 
 	@Override
