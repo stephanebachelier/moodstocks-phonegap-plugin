@@ -106,23 +106,27 @@
     _toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     _toolbar.barStyle = UIBarStyleBlack;
     _toolbar.tintColor = nil;
-
+    _toolbar.alpha = 0.6;
+    _toolbar.translucent = YES;
+    
     _barButton = [[[UIBarButtonItem alloc]
-                   initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                   initWithTitle: @"Cancel"
+                   style:UIBarButtonItemStyleDone
                    target:self
                    action:@selector(dismissAction)] autorelease];
-
+    _barButton.tintColor = [UIColor whiteColor];
+    
     id flexSpace = [[[UIBarButtonItem alloc]
-                    initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                    target:nil
-                    action:nil] autorelease];
-
+                     initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                     target:nil
+                     action:nil] autorelease];
+    
     _toolbar.items = [NSArray arrayWithObjects:flexSpace, _barButton,nil];
     [_toolbar sizeToFit];
     CGFloat toolbarHeight = _toolbar.frame.size.height;
     CGRect frame = CGRectMake(0, [[UIScreen mainScreen] bounds].size.height - toolbarHeight, [[UIScreen mainScreen] bounds].size.width, toolbarHeight);
     [_toolbar setFrame:frame];
-
+    
     [self.view addSubview:_toolbar];
 }
 
