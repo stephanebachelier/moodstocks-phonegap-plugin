@@ -103,7 +103,7 @@
     [videoPreviewLayer insertSublayer:captureLayer below:[[videoPreviewLayer sublayers] objectAtIndex:0]];
 
     _toolbar = [[[UIToolbar alloc] init] autorelease];
-    _toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+    _toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     _toolbar.barStyle = UIBarStyleBlack;
     _toolbar.tintColor = nil;
 
@@ -117,12 +117,11 @@
                     target:nil
                     action:nil] autorelease];
 
-    _toolbar.items = [NSArray arrayWithObjects:_barButton,flexSpace,nil];
+    _toolbar.items = [NSArray arrayWithObjects:flexSpace, _barButton,nil];
     [_toolbar sizeToFit];
     CGFloat toolbarHeight = _toolbar.frame.size.height;
-    CGFloat rootViewWidth = CGRectGetWidth(self.view.bounds);
-    CGRect rectArea = CGRectMake(0, 0, rootViewWidth, toolbarHeight);
-    [_toolbar setFrame:rectArea];
+    CGRect frame = CGRectMake(0, [[UIScreen mainScreen] bounds].size.height - toolbarHeight, [[UIScreen mainScreen] bounds].size.width, toolbarHeight);
+    [_toolbar setFrame:frame];
 
     [self.view addSubview:_toolbar];
 }
