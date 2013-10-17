@@ -23,14 +23,13 @@
 
 package com.moodstocks.phonegap.plugin;
 
-import org.apache.cordova.api.PluginResult;
+import org.apache.cordova.PluginResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.moodstocks.android.MoodstocksError;
 import com.moodstocks.android.Result;
 import com.moodstocks.android.ScannerSession;
-import com.moodstocks.phonegap.demo.R;
 import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
