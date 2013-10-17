@@ -49,7 +49,12 @@
     UIColor *_originBGColor;
 }
 
-- (id)initWithHandler:(MSHandler *)handler scanOptions:(NSInteger)scanOptions plugin:(MoodstocksPlugin *)plugin;
+- (id)initWithHandler:(MSHandler *)handler
+          scanOptions:(NSInteger)scanOptions
+ useDeviceOrientation:(BOOL)useDeviceOrientation
+    noPartialMatching:(BOOL)noPartialMatching
+   smallTargetSupport:(BOOL)smallTargetSupport
+               plugin:(MoodstocksPlugin *)plugin;
 - (void)pause;
 - (void)resume;
 - (void)dismissAction;

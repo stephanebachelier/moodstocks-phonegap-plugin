@@ -34,7 +34,12 @@
 
 @implementation MSScannerController
 
-- (id)initWithHandler:(MSHandler *)handler scanOptions:(NSInteger)scanOptions plugin:(MoodstocksPlugin *)plugin {
+- (id)initWithHandler:(MSHandler *)handler
+          scanOptions:(NSInteger)scanOptions
+ useDeviceOrientation:(BOOL)useDeviceOrientation
+    noPartialMatching:(BOOL)noPartialMatching
+   smallTargetSupport:(BOOL)smallTargetSupport
+               plugin:(MoodstocksPlugin *)plugin {
     self = [super init];
 
     if (self) {
@@ -45,7 +50,10 @@
 #if MS_SDK_REQUIREMENTS
         [_scannerSession setScanOptions:_scanOptions];
         [_scannerSession setDelegate:self];
-        [_scannerSession setUseDeviceOrientation:YES];
+
+        [_scannerSession setUseDeviceOrientation:useDeviceOrientation];
+        [_scannerSession setNoPartialMatching:noPartialMatching];
+        [_scannerSession setSmallTargetSupport:smallTargetSupport];
 
         _plugin = plugin;
 #endif
@@ -91,8 +99,6 @@
     [[captureLayer connection] setVideoOrientation:[[UIDevice currentDevice] orientation]];
     
     [videoPreviewLayer insertSublayer:captureLayer below:[[videoPreviewLayer sublayers] objectAtIndex:0]];
-    
-    [_scannerSession startCapture];
 
     _toolbar = [[[UIToolbar alloc] init] autorelease];
     _toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
@@ -117,6 +123,13 @@
     [_toolbar setFrame:rectArea];
 
     [self.view addSubview:_toolbar];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [_scannerSession startCapture];
 }
 
 - (void)viewWillLayoutSubviews
