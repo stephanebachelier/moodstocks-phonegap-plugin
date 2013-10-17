@@ -43,6 +43,7 @@
     UIToolbar *_toolbar;
     UIBarButtonItem *_barButton;
     NSInteger _scanOptions;
+    BOOL _useDeviceOrientation;
 
     MoodstocksPlugin *_plugin;
     UIWebView *_resultOverlay;
