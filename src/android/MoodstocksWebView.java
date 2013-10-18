@@ -32,23 +32,23 @@ import android.view.KeyEvent;
 public class MoodstocksWebView extends CordovaWebView {
 
 	public static final String TAG = "MoodstocksWebView";
-	
+
 	private boolean scanActivityStarted = false;
-	
+
 	public MoodstocksWebView(Context context) {
 		super(context);
 	}
-	
+
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && scanActivityStarted) {
-    		return false;
+    	return false;
 		}
 		else {
 			return super.onKeyUp(keyCode, event);
 		}
-    }
-	
+  }
+
 	public void onStatusUpdate(boolean activityStatus) {
 		scanActivityStarted = activityStatus;
 	}
