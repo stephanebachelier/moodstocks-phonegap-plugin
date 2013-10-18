@@ -70,6 +70,7 @@
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <activity
                 android:name="com.moodstocks.phonegap.plugin.MoodstocksScanActivity"
+                android:screenOrientation="portrait"
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             </activity>
         </config-file>
