@@ -42,12 +42,11 @@ public class MoodstocksWebView extends CordovaWebView {
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && scanActivityStarted) {
-    	return false;
-		}
-		else {
+			return false;
+		} else {
 			return super.onKeyUp(keyCode, event);
 		}
-  }
+	}
 
 	public void onStatusUpdate(boolean activityStatus) {
 		scanActivityStarted = activityStatus;

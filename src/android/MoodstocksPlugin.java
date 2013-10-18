@@ -38,7 +38,8 @@ import android.util.Log;
 import com.moodstocks.android.MoodstocksError;
 import com.moodstocks.android.Scanner;
 
-public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListener {
+public class MoodstocksPlugin extends CordovaPlugin implements
+		Scanner.SyncListener {
 
 	public static final String TAG = "MoodstocksPlugin";
 
@@ -62,27 +63,25 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 	public boolean compatible = false;
 	private Scanner scanner = null;
 
-	//--------------------------------
+	// --------------------------------
 	// Moodstocks API key/secret pair
-	//--------------------------------
+	// --------------------------------
 	private static final String API_KEY = "ApIkEy";
 	private static final String API_SECRET = "ApIsEcReT";
 
-	public boolean execute(String action, JSONArray args, CallbackContext callbackContext)
-			throws JSONException {
+	public boolean execute(String action, JSONArray args,
+			CallbackContext callbackContext) throws JSONException {
 
 		if (action.equals(OPEN)) {
 			this.open(callbackContext);
 
 			return true;
-		}
-		else if (action.equals(SYNC)) {
+		} else if (action.equals(SYNC)) {
 			this.syncCallback = callbackContext;
 			this.sync();
 
 			return true;
-		}
-		else if (action.equals(SCAN)) {
+		} else if (action.equals(SCAN)) {
 			MoodstocksPlugin.setOverlay(this.webView);
 			MoodstocksPlugin.overlay.setBackgroundColor(Color.TRANSPARENT);
 
@@ -90,18 +89,15 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 			this.scan(args);
 
 			return true;
-		}
-		else if (action.equals(PAUSE)) {
+		} else if (action.equals(PAUSE)) {
 			this.pause(callbackContext);
 
 			return true;
-		}
-		else if (action.equals(RESUME)) {
+		} else if (action.equals(RESUME)) {
 			this.resume(callbackContext);
 
 			return true;
-		}
-		else if (action.equals(DISMISS)) {
+		} else if (action.equals(DISMISS)) {
 			this.dismiss(callbackContext);
 
 			return true;
@@ -115,36 +111,35 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 		if (compatible) {
 			try {
 				this.scanner = Scanner.get();
-				scanner.open(this.cordova.getActivity().getApplicationContext(), API_KEY, API_SECRET);
+				scanner.open(
+						this.cordova.getActivity().getApplicationContext(),
+						API_KEY, API_SECRET);
 				callbackContext.success();
 
 			} catch (MoodstocksError e) {
 				if (e.getErrorCode() == MoodstocksError.Code.CREDMISMATCH) {
-					// == DO NOT USE IN PRODUCTION: THIS IS A HELP MESSAGE FOR DEVELOPERS
-					String errmsg = "there is a problem with your key/secret pair: "+
-							"the current pair does NOT match with the one recorded within the on-disk datastore. "+
-							"This could happen if:\n"+
-							" * you have first build & run the app without replacing the default"+
-							" \"ApIkEy\" and \"ApIsEcReT\" pair, and later on replaced with your real key/secret,\n"+
-							" * or, you have first made a typo on the key/secret pair, build & run the"+
-							" app, and later on fixed the typo and re-deployed.\n"+
-							"\n"+
-							"To solve your problem:\n"+
-							" 1) uninstall the app from your device,\n"+
-							" 2) make sure to properly configure your key/secret pair within Scanner.java\n"+
-							" 3) re-build & run\n";
-					MoodstocksError err = new MoodstocksError(errmsg, MoodstocksError.Code.CREDMISMATCH);
+					String errmsg = "there is a problem with your key/secret pair: "
+							+ "the current pair does NOT match with the one recorded within the on-disk datastore. "
+							+ "This could happen if:\n"
+							+ " * you have first build & run the app without replacing the default"
+							+ " \"ApIkEy\" and \"ApIsEcReT\" pair, and later on replaced with your real key/secret,\n"
+							+ " * or, you have first made a typo on the key/secret pair, build & run the"
+							+ " app, and later on fixed the typo and re-deployed.\n"
+							+ "\n"
+							+ "To solve your problem:\n"
+							+ " 1) uninstall the app from your device,\n"
+							+ " 2) make sure to properly configure your key/secret pair within Scanner.java\n"
+							+ " 3) re-build & run\n";
+					MoodstocksError err = new MoodstocksError(errmsg,
+							MoodstocksError.Code.CREDMISMATCH);
 					err.log();
-					// == DO NOT USE IN PRODUCTION: THIS WAS A HELP MESSAGE FOR DEVELOPERS
 					callbackContext.error(errmsg);
-				}
-				else {
+				} else {
 					e.log();
 					callbackContext.error(e.getErrorCode());
 				}
 			}
-		}
-		else {
+		} else {
 			/* device is not compatible */
 			// error callback with message to display on web view
 			callbackContext.error("DEVICE NOT COMPATIBLE");
@@ -156,22 +151,24 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 	}
 
 	public void scan(JSONArray args) throws JSONException {
-		Intent scanIntent = new Intent(cordova.getActivity(), MoodstocksScanActivity.class);
-		scanIntent.putExtra("com.moodstocks.phonegap.plugin", "MoodstocksScanActivity");
+		Intent scanIntent = new Intent(cordova.getActivity(),
+				MoodstocksScanActivity.class);
+		scanIntent.putExtra("com.moodstocks.phonegap.plugin",
+				"MoodstocksScanActivity");
 		scanIntent.putExtra("scanOptions", args.getInt(0));
 		scanIntent.putExtra("useDeviceOrientation", args.getBoolean(1));
 		scanIntent.putExtra("noPartialMatching", args.getBoolean(2));
 		scanIntent.putExtra("smallTargetSupport", args.getBoolean(3));
 
-		// NOTE: the original startActivityForResult() will pause PhoneGap app's js code
-		// the one we use here is a override-version
+		// NOTE: the original startActivityForResult() will pause PhoneGap app's
+		// js code. Here we use the one we override
 		this.cordova.startActivityForResult(this, scanIntent, 1);
 
 		scannerStarted = true;
 	}
 
 	public void pause(CallbackContext callbackContext) {
-		if(scannerStarted) {
+		if (scannerStarted) {
 			Intent pauseIntent = new Intent(PLUGINACTION);
 			pauseIntent.putExtra(PLUGINACTION, PAUSE);
 
@@ -181,7 +178,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 	}
 
 	public void resume(CallbackContext callbackContext) {
-		if(scannerStarted) {
+		if (scannerStarted) {
 			Intent resumeIntent = new Intent(PLUGINACTION);
 			resumeIntent.putExtra(PLUGINACTION, RESUME);
 
@@ -191,7 +188,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 	}
 
 	public void dismiss(CallbackContext callbackContext) {
-		if(scannerStarted) {
+		if (scannerStarted) {
 			Intent dismissIntent = new Intent(PLUGINACTION);
 			dismissIntent.putExtra(PLUGINACTION, DISMISS);
 
@@ -204,7 +201,6 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 
 	@Override
 	public void onSyncStart() {
-		// Developer logs, do not use in production
 		Log.d(TAG, "[SYNC] Starting...");
 
 		JSONObject obj = new JSONObject();
@@ -213,7 +209,9 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 			obj.put(MESSAGE, "");
 			obj.put(STATUS, 1);
 			obj.put(PROGRESS, 0);
-		} catch(JSONException e) {}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 
 		PluginResult r = new PluginResult(PluginResult.Status.OK, obj);
 		r.setKeepCallback(true);
@@ -222,7 +220,6 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 
 	@Override
 	public void onSyncComplete() {
-		// Developer logs, do not use in production
 		Log.d(TAG, "[SYNC] Complete!");
 
 		JSONObject obj = new JSONObject();
@@ -231,7 +228,9 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 			obj.put(MESSAGE, "");
 			obj.put(STATUS, 3);
 			obj.put(PROGRESS, 100);
-		} catch(JSONException e) {}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 
 		PluginResult r = new PluginResult(PluginResult.Status.OK, obj);
 		r.setKeepCallback(false);
@@ -240,7 +239,6 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 
 	@Override
 	public void onSyncFailed(MoodstocksError e) {
-		// fail silently, the user has online search callback.
 		e.log();
 
 		JSONObject obj = new JSONObject();
@@ -249,7 +247,9 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 			obj.put(MESSAGE, "");
 			obj.put(STATUS, 0);
 			obj.put(PROGRESS, 0);
-		} catch(JSONException e1) {}
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
 
 		PluginResult r = new PluginResult(PluginResult.Status.ERROR, obj);
 		r.setKeepCallback(false);
@@ -258,7 +258,6 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 
 	@Override
 	public void onSyncProgress(int total, int current) {
-		// Developer logs, do not use in production
 		Log.d(TAG, "[SYNC] " + current + "/" + total);
 
 		JSONObject obj = new JSONObject();
@@ -266,8 +265,10 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 		try {
 			obj.put(MESSAGE, "");
 			obj.put(STATUS, 2);
-			obj.put(PROGRESS, 100 * (current/total));
-		} catch(JSONException e) {}
+			obj.put(PROGRESS, 100 * (current / total));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 
 		PluginResult r = new PluginResult(PluginResult.Status.OK, obj);
 		r.setKeepCallback(true);
@@ -288,7 +289,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 	}
 
 	public static MoodstocksWebView getOverlay() {
-		return (MoodstocksWebView)overlay;
+		return (MoodstocksWebView) overlay;
 	}
 
 	private static void setOverlay(CordovaWebView webView) {

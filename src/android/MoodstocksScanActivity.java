@@ -27,22 +27,24 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.moodstocks.android.MoodstocksError;
-import com.moodstocks.android.Result;
-import com.moodstocks.android.ScannerSession;
-import android.os.Build;
-import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.SurfaceView;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
-public class MoodstocksScanActivity extends Activity implements ScannerSession.Listener {
+import com.moodstocks.android.MoodstocksError;
+import com.moodstocks.android.Result;
+import com.moodstocks.android.ScannerSession;
+
+public class MoodstocksScanActivity extends Activity implements
+		ScannerSession.Listener {
 
 	public static final String TAG = "MoodstocksScanActivity";
 	public static final String PLUGINACTION = "com.moodstocks.phonegap.plugin.action";
@@ -59,16 +61,16 @@ public class MoodstocksScanActivity extends Activity implements ScannerSession.L
 	private boolean backPressActivated = true;
 	private ActionReceiver MoodstocksActionReceiver;
 
-  private class ActionReceiver extends BroadcastReceiver {
+	private class ActionReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context ctx, Intent intent) {
 			String receivedAction = intent.getExtras().getString(PLUGINACTION);
 
 			if (receivedAction.equals(PAUSE)) {
-		  	session.pause();
-		    backPressActivated = false;
-		  }
+				session.pause();
+				backPressActivated = false;
+			}
 
 			if (receivedAction.equals(RESUME)) {
 				session.resume();
@@ -80,7 +82,7 @@ public class MoodstocksScanActivity extends Activity implements ScannerSession.L
 				onBackPressed();
 			}
 		}
-  }
+	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
@@ -88,32 +90,35 @@ public class MoodstocksScanActivity extends Activity implements ScannerSession.L
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.scan);
 
-    // Get the camera preview surface
-    SurfaceView preview = (SurfaceView) findViewById(R.id.preview);
+		// Get the camera preview surface
+		SurfaceView preview = (SurfaceView) findViewById(R.id.preview);
 
-    // Insert CordovaWebview as the overlay into the web container
-    webContainer = (RelativeLayout) findViewById(R.id.webContainer);
-    webContainer.addView(MoodstocksPlugin.getOverlay(), 0);
+		// Insert CordovaWebview as the overlay into the web container
+		webContainer = (RelativeLayout) findViewById(R.id.webContainer);
+		webContainer.addView(MoodstocksPlugin.getOverlay(), 0);
 
-    // bug of android 3.0 - 4.0.3: issue with transparent webview
-    if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB
-    		&& android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-    	webContainer.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-    }
+		// bug of android 3.0 - 4.0.3: issue with transparent webview
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB
+				&& android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+			webContainer.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+		}
 
-    // Create a scanner session
-    try {
-    	session = new ScannerSession(this, this, preview);
-    } catch (MoodstocksError e) {
-    	e.log();
-    }
+		// Create a scanner session
+		try {
+			session = new ScannerSession(this, this, preview);
+		} catch (MoodstocksError e) {
+			e.log();
+		}
 
-    // Get scan options
-    ScanOptions = getIntent().getExtras().getInt("scanOptions");
-    session.setOptions(ScanOptions);
-    session.useDeviceOrientation = getIntent().getExtras().getBoolean("useDeviceOrientation");
-    session.noPartialMatching = getIntent().getExtras().getBoolean("noPartialMatching");
-    session.smallTargetSupport = getIntent().getExtras().getBoolean("smallTargetSupport");
+		// Get scan options
+		ScanOptions = getIntent().getExtras().getInt("scanOptions");
+		session.setOptions(ScanOptions);
+		session.useDeviceOrientation = getIntent().getExtras().getBoolean(
+				"useDeviceOrientation");
+		session.noPartialMatching = getIntent().getExtras().getBoolean(
+				"noPartialMatching");
+		session.smallTargetSupport = getIntent().getExtras().getBoolean(
+				"smallTargetSupport");
 	}
 
 	@Override
@@ -127,8 +132,7 @@ public class MoodstocksScanActivity extends Activity implements ScannerSession.L
 		if (MoodstocksActionReceiver == null)
 			MoodstocksActionReceiver = new ActionReceiver();
 
-		// Filter on the key word pluginAction to make sure we only take plugin actions
-		// a.k.a MoodstocksPlugin - resume(), pause(), dismiss()
+		// Filter on the key word pluginAction
 		IntentFilter intentFilter = new IntentFilter(PLUGINACTION);
 		registerReceiver(MoodstocksActionReceiver, intentFilter);
 
@@ -142,7 +146,8 @@ public class MoodstocksScanActivity extends Activity implements ScannerSession.L
 		session.pause();
 
 		// Unregister the receiver when the scanner is on pause
-		if (MoodstocksActionReceiver != null) unregisterReceiver(MoodstocksActionReceiver);
+		if (MoodstocksActionReceiver != null)
+			unregisterReceiver(MoodstocksActionReceiver);
 
 		// Update the flag in MoodstocksWebView
 		MoodstocksPlugin.getOverlay().onStatusUpdate(false);
@@ -156,7 +161,7 @@ public class MoodstocksScanActivity extends Activity implements ScannerSession.L
 
 	@Override
 	public void onBackPressed() {
-		if(backPressActivated) {
+		if (backPressActivated) {
 			session.pause();
 
 			JSONObject obj = new JSONObject();
@@ -172,15 +177,15 @@ public class MoodstocksScanActivity extends Activity implements ScannerSession.L
 
 			MoodstocksPlugin.getScanCallback().sendPluginResult(r);
 
-			// Remove the web view from web container when we quit the scan activity
+			// Remove the web view from web container when quitting
 			webContainer.removeView(MoodstocksPlugin.getOverlay());
 			super.onBackPressed();
 		}
 	}
 
-	//-------------------------
+	// -------------------------
 	// ScannerSession.Listener
-	//-------------------------
+	// -------------------------
 
 	@Override
 	public void onScanComplete(Result result) {

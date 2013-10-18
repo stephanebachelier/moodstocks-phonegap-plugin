@@ -36,71 +36,75 @@ import android.view.ViewManager;
 import com.moodstocks.phonegap.plugin.MoodstocksWebView;
 
 public class Demo extends DroidGap {
+
   private boolean scanActivityStarted = false;
 
   @Override
-  public void onCreate(Bundle savedInstanceState)
-  {
+  public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    super.loadUrl("file:///android_asset/www/index.html");
+    // Set by <content src="index.html" /> in config.xml
+    super.loadUrl(Config.getStartUrl());
+    // super.loadUrl("file:///android_asset/www/index.html")
   }
 
   @Override
   public void init() {
-  	MoodstocksWebView webView = new MoodstocksWebView(Demo.this);
+    MoodstocksWebView webView = new MoodstocksWebView(Demo.this);
     CordovaWebViewClient webViewClient;
 
-    if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+    if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
       webViewClient = new CordovaWebViewClient(this, webView);
-    }
-    else {
+    } else {
       webViewClient = new IceCreamCordovaWebViewClient(this, webView);
     }
 
-    super.init(webView, webViewClient, new CordovaChromeClient(this, webView));
+    super.init(webView, webViewClient, new CordovaChromeClient(this,
+        webView));
   }
 
   @Override
   public void onPause() {
-  	super.onPause();
+    super.onPause();
 
-  	// Remove the web view from the root view when we launch the Moodstocks scanner
-  	if (scanActivityStarted) {
-  		super.root.removeView(super.appView);
-  	}
+    // Remove the web view from the root view during launching
+    if (scanActivityStarted) {
+      super.root.removeView(super.appView);
+    }
   }
 
   @Override
   public void onResume() {
-  	super.onResume();
+    super.onResume();
 
-  	// this case is occurred when the scanActivity fails at launching
-  	// the failure of launching scanner is often caused by the camera's unavailability
-  	// in this case we retrieve & reload the web view before inserting it back
-  	if (scanActivityStarted && (super.appView.getParent() != null)) {
-  		((ViewManager)super.appView.getParent()).removeView(super.appView);
-  		super.appView.reload();
-  	}
+    // this case is occurred when the scanActivity fails at launching
+    // the failure of launching scanner is often caused by the camera's
+    // unavailability in this case we retrieve & reload the web view before
+    // inserting it back
+    if (scanActivityStarted && (super.appView.getParent() != null)) {
+      ((ViewManager) super.appView.getParent()).removeView(super.appView);
+      super.appView.reload();
+    }
 
-  	// Reset the web view to root container when we dismiss the Moodstocks scanner
-  	if (scanActivityStarted && (super.appView.getParent() == null)) {
-  		super.root.addView(super.appView);
-  		scanActivityStarted = false;
-  	}
+    // Reset the web view to root container after dismissing
+    if (scanActivityStarted && (super.appView.getParent() == null)) {
+      super.root.addView(super.appView);
+      scanActivityStarted = false;
+    }
   }
 
   @Override
-  public void startActivityForResult(CordovaPlugin command, Intent intent, int requestCode) {
-  	// If the intent indicate the upcoming activity is a Moodtsocks scan activity
-  	// We will launch the activity and keep the js/native code running on the background
+  public void startActivityForResult(CordovaPlugin command, Intent intent,
+      int requestCode) {
+    // If the intent indicate the activity is a MoodtsocksScanActivity,
+    // launch the activity and keep the js/native code running onbackground
     if (intent.getExtras().getString("com.moodstocks.phonegap.plugin") != null) {
-    	if(intent.getExtras().getString("com.moodstocks.phonegap.plugin").equals("MoodstocksScanActivity")) {
-    		scanActivityStarted = true;
-    		this.startActivityForResult(intent, requestCode);
-    	}
+      if (intent.getExtras().getString("com.moodstocks.phonegap.plugin")
+          .equals("MoodstocksScanActivity")) {
+        scanActivityStarted = true;
+        this.startActivityForResult(intent, requestCode);
+      }
+    } else {
+      super.startActivityForResult(command, intent, requestCode);
     }
-  	else {
-  		super.startActivityForResult(command, intent, requestCode);
-  	}
   }
 }
