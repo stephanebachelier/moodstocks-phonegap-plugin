@@ -52,7 +52,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 	public static final String PLUGINACTION = "com.moodstocks.phonegap.plugin.action";
 	public static final String MESSAGE = "message";
 	public static final String STATUS = "status";
-	public static final String PROGRESS =  "progress";
+	public static final String PROGRESS = "progress";
 
 	private CallbackContext syncCallback;
 	private static CallbackContext scanCallback;
@@ -65,7 +65,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 	//--------------------------------
 	// Moodstocks API key/secret pair
 	//--------------------------------
-	private static final String API_KEY    = "ApIkEy";
+	private static final String API_KEY = "ApIkEy";
 	private static final String API_SECRET = "ApIsEcReT";
 
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext)
@@ -156,8 +156,6 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 	}
 
 	public void scan(JSONArray args) throws JSONException {
-		Log.d(TAG, "scan action");
-
 		Intent scanIntent = new Intent(cordova.getActivity(), MoodstocksScanActivity.class);
 		scanIntent.putExtra("com.moodstocks.phonegap.plugin", "MoodstocksScanActivity");
 		scanIntent.putExtra("scanOptions", args.getInt(0));
@@ -207,7 +205,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 	@Override
 	public void onSyncStart() {
 		// Developer logs, do not use in production
-		Log.d(TAG, " [SYNC] Starting...");
+		Log.d(TAG, "[SYNC] Starting...");
 
 		JSONObject obj = new JSONObject();
 
@@ -225,7 +223,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 	@Override
 	public void onSyncComplete() {
 		// Developer logs, do not use in production
-		Log.d(TAG, " [SYNC] Complete!");
+		Log.d(TAG, "[SYNC] Complete!");
 
 		JSONObject obj = new JSONObject();
 
@@ -304,5 +302,4 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 	public static void setScanCallback(CallbackContext scanCallback) {
 		MoodstocksPlugin.scanCallback = scanCallback;
 	}
-
 }

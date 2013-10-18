@@ -57,7 +57,7 @@ public class Demo extends DroidGap {
       webViewClient = new IceCreamCordovaWebViewClient(this, webView);
     }
 
-    this.init(webView, webViewClient, new CordovaChromeClient(this, webView));
+    super.init(webView, webViewClient, new CordovaChromeClient(this, webView));
   }
 
   @Override
@@ -94,7 +94,7 @@ public class Demo extends DroidGap {
   	// If the intent indicate the upcoming activity is a Moodtsocks scan activity
   	// We will launch the activity and keep the js/native code running on the background
     if (intent.getExtras().getString("com.moodstocks.phonegap.plugin") != null) {
-    	if(intent.getExtras().getString("com.moodstocks.phonegap.plugin").equals("MoodstocksScanActivity"))  {
+    	if(intent.getExtras().getString("com.moodstocks.phonegap.plugin").equals("MoodstocksScanActivity")) {
     		scanActivityStarted = true;
     		this.startActivityForResult(intent, requestCode);
     	}

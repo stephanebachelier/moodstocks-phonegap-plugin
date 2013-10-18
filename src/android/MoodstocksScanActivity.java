@@ -164,6 +164,7 @@ public class MoodstocksScanActivity extends Activity implements ScannerSession.L
 				obj.put(FORMAT, null);
 				obj.put(VALUE, null);
 			} catch (JSONException e) {
+				e.printStackTrace();
 			}
 
 			PluginResult r = new PluginResult(PluginResult.Status.OK, obj);
@@ -190,6 +191,7 @@ public class MoodstocksScanActivity extends Activity implements ScannerSession.L
 				obj.put(FORMAT, result.getType());
 				obj.put(VALUE, result.getValue());
 			} catch (JSONException e) {
+				e.printStackTrace();
 			}
 
 			PluginResult r = new PluginResult(PluginResult.Status.OK, obj);
