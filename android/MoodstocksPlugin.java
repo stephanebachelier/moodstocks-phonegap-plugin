@@ -49,7 +49,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 	public static final String RESUME = "resume";
 	public static final String DISMISS = "dismiss";
 
-	public static final String PLUGINACTION = "pluginAction";
+	public static final String PLUGINACTION = "com.moodstocks.phonegap.plugin.action";
 	public static final String MESSAGE = "message";
 	public static final String STATUS = "status";
 	public static final String PROGRESS =  "progress";
@@ -159,7 +159,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements Scanner.SyncListe
 		Log.d(TAG, "scan action");
 
 		Intent scanIntent = new Intent(cordova.getActivity(), MoodstocksScanActivity.class);
-		scanIntent.putExtra("activity", "MoodstocksScanActivity");
+		scanIntent.putExtra("com.moodstocks.phonegap.plugin", "MoodstocksScanActivity");
 		scanIntent.putExtra("scanOptions", args.getInt(0));
 
 		// NOTE: the original startActivityForResult() will pause PhoneGap app's js code

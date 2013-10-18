@@ -45,8 +45,8 @@ import android.widget.RelativeLayout;
 
 public class MoodstocksScanActivity extends Activity implements ScannerSession.Listener {
     
-	public static final String TAG = "ScanActivity";
-	public static final String PLUGINACTION = "pluginAction";
+	public static final String TAG = "MoodstocksScanActivity";
+	public static final String PLUGINACTION = "com.moodstocks.phonegap.plugin.action";
 	public static final String PAUSE = "pause";
 	public static final String RESUME = "resume";
 	public static final String DISMISS = "dismiss";
