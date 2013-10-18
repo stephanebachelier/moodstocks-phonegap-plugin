@@ -93,10 +93,12 @@ public class Demo extends DroidGap {
     public void startActivityForResult(CordovaPlugin command, Intent intent, int requestCode) {
     	// If the intent indicate the upcoming activity is a Moodtsocks scan activity
     	// We will launch the activity and keep the js/native code running on the background
-    	if(intent.getExtras().getString("activity").equals("MoodstocksScanActivity"))  {
-    		scanActivityStarted = true;
-    		this.startActivityForResult(intent, requestCode);
-    	}
+        if (intent.getExtras().getString("activity") != null) {
+        	if(intent.getExtras().getString("activity").equals("MoodstocksScanActivity"))  {
+        		scanActivityStarted = true;
+        		this.startActivityForResult(intent, requestCode);
+        	}
+        }
     	else {
     		super.startActivityForResult(command, intent, requestCode);
     	}
