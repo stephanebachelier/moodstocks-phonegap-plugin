@@ -55,7 +55,7 @@ var MoodstocksPlugin = {
     },
 
     // Launch the scanner
-    scan: function(success, cancel, fail, scanOptions) {
+    scan: function(success, cancel, fail, scanOptions, scanFlags) {
         // Scan formats
         var scanFormats = {
             ean8: 1 << 0,                /* EAN8 linear barcode */
@@ -105,14 +105,14 @@ var MoodstocksPlugin = {
         var noPartialMatching = false;
         var smallTargetSupport = false;
 
-        if (scanOptions["useDeviceOrientation"]) {
-            useDeviceOrientation = scanOptions["useDeviceOrientation"];
+        if (scanFlags["useDeviceOrientation"]) {
+            useDeviceOrientation = scanFlags["useDeviceOrientation"];
         }
-        if (scanOptions["noPartialMatching"]) {
-            noPartialMatching = scanOptions["noPartialMatching"];
+        if (scanFlags["noPartialMatching"]) {
+            noPartialMatching = scanFlags["noPartialMatching"];
         }
-        if (scanOptions["smallTargetSupport"]) {
-            smallTargetSupport = scanOptions["smallTargetSupport"];
+        if (scanFlags["smallTargetSupport"]) {
+            smallTargetSupport = scanFlags["smallTargetSupport"];
         }
 
         return cordova.exec(successWrapper, fail, "MoodstocksPlugin", "scan",
