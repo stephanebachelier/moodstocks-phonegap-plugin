@@ -31,11 +31,11 @@
 
         <!-- header & source files -->
         <header-file src="src/ios/MoodstocksPlugin.h" />
-        <source-file src="src/ios/MoodstocksPlugin.m" compiler-flags="-fno-objc-arc" />
+        <source-file src="src/ios/MoodstocksPlugin.m" />
         <header-file src="src/ios/MSHandler.h" />
-        <source-file src="src/ios/MSHandler.m" compiler-flags="-fno-objc-arc" />
+        <source-file src="src/ios/MSHandler.m" />
         <header-file src="src/ios/MSScannerController.h" />
-        <source-file src="src/ios/MSScannerController.m" compiler-flags="-fno-objc-arc" />
+        <source-file src="src/ios/MSScannerController.m" />
         <header-file src="src/ios/MoodstocksAPI.h" />
 
         <!-- system frameworks -->

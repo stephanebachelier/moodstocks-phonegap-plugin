@@ -42,7 +42,9 @@
 }
 
 - (void)dealloc {
+#if !__has_feature(objc_arc)
     [super dealloc];
+#endif
 
     self.plugin = nil;
     self.callback = nil;
@@ -53,7 +55,9 @@
     MSScanner *scanner = [MSScanner sharedInstance];
     if ([scanner isSyncing]) return;
     // Retain until the sync is finished (see below)
+#if !__has_feature(objc_arc)
     [self retain];
+#endif
     [scanner syncWithDelegate:self];
 #endif
 }
@@ -84,8 +88,9 @@
                          progress:100
                          callback:self.callback
                shouldKeepCallback:NO];
-
+#if !__has_feature(objc_arc)
     [self release];
+#endif
 }
 
 - (void)scanner:(MSScanner *)scanner failedToSyncWithError:(NSError *)error {
@@ -98,8 +103,9 @@
                              callback:self.callback
                    shouldKeepCallback:YES];
     }
-
+#if !__has_feature(objc_arc)
     [self release];
+#endif
 }
 
 #pragma mark - Scanner Session Handler

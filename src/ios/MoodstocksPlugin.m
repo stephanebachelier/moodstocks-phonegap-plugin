@@ -84,8 +84,9 @@
     // NOTE: will be released when sync is over (please refer to MSHandler.m)
     MSHandler *syncHandler = [[MSHandler alloc] initWithPlugin:self callback:command.callbackId];
     [syncHandler sync];
-
+#if !__has_feature(objc_arc)
     [syncHandler release];
+#endif
 }
 
 // Plugin method - scan: set scan options & launch the scanner
@@ -107,8 +108,9 @@
                                                          plugin:self];
 
     [self.viewController presentModalViewController:self.scanner animated:YES];
-
+#if !__has_feature(objc_arc)
     [scanHandler release];
+#endif
 }
 
 // Plugin method - pause: pause the scanner session
@@ -145,8 +147,11 @@
 - (void)updateScanResult:(NSString *)value
                   format:(int)format
                 callback:(NSString *)callback {
-
+#if __has_feature(objc_arc)
+    NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+#else
     NSMutableDictionary *resultDict = [[[NSMutableDictionary alloc] init] autorelease];
+#endif
 
     // Scan result format
     [resultDict setObject:[NSNumber numberWithInteger:format] forKey:@"format"];

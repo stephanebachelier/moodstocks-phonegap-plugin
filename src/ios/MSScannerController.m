@@ -60,9 +60,10 @@
 }
 
 - (void)dealloc {
+#if !__has_feature(objc_arc)
     [super dealloc];
-
     [_scannerSession release];
+#endif
     self.result = nil;
     self.handler = nil;
 }
@@ -71,7 +72,11 @@
     [super loadView];
 
     CGRect scannerFrame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));
+#if __has_feature(objc_arc)
+    _videoPreview = [[UIView alloc] initWithFrame:scannerFrame];
+#else
     _videoPreview = [[[UIView alloc] initWithFrame:scannerFrame] autorelease];
+#endif
     _videoPreview.backgroundColor = [UIColor blackColor];
     _videoPreview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _videoPreview.autoresizesSubviews = YES;
@@ -101,20 +106,38 @@
 
     [videoPreviewLayer insertSublayer:captureLayer below:[[videoPreviewLayer sublayers] objectAtIndex:0]];
 
+#if __has_feature(objc_arc)
+    _toolbar = [[UIToolbar alloc] init];
+#else
     _toolbar = [[[UIToolbar alloc] init] autorelease];
+#endif
     _toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     _toolbar.barStyle = UIBarStyleBlack;
     _toolbar.tintColor = nil;
 
+#if __has_feature(objc_arc)
+    _barButton = [[UIBarButtonItem alloc]
+                   initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                   target:self
+                   action:@selector(dismissAction)];
+#else
     _barButton = [[[UIBarButtonItem alloc]
                    initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                    target:self
                    action:@selector(dismissAction)] autorelease];
+#endif
 
+#if __has_feature(objc_arc)
+    id flexSpace = [[UIBarButtonItem alloc]
+                    initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                    target:nil
+                    action:nil];
+#else
     id flexSpace = [[[UIBarButtonItem alloc]
                     initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                     target:nil
                     action:nil] autorelease];
+#endif
 
     _toolbar.items = [NSArray arrayWithObjects:_barButton,flexSpace,nil];
     [_toolbar sizeToFit];
