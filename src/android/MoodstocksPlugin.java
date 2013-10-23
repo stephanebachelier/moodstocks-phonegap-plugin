@@ -118,18 +118,18 @@ public class MoodstocksPlugin extends CordovaPlugin implements
 
 			} catch (MoodstocksError e) {
 				if (e.getErrorCode() == MoodstocksError.Code.CREDMISMATCH) {
-					String errmsg = "there is a problem with your key/secret pair: "
+					String errmsg = "There is a problem with your key/secret pair: "
 							+ "the current pair does NOT match with the one recorded within the on-disk datastore. "
-							+ "This could happen if:\n"
+							+ "This could happen if:<br/>"
 							+ " * you have first build & run the app without replacing the default"
-							+ " \"ApIkEy\" and \"ApIsEcReT\" pair, and later on replaced with your real key/secret,\n"
+							+ " \"ApIkEy\" and \"ApIsEcReT\" pair, and later on replaced with your real key/secret,<br/>"
 							+ " * or, you have first made a typo on the key/secret pair, build & run the"
-							+ " app, and later on fixed the typo and re-deployed.\n"
-							+ "\n"
-							+ "To solve your problem:\n"
-							+ " 1) uninstall the app from your device,\n"
-							+ " 2) make sure to properly configure your key/secret pair within Scanner.java\n"
-							+ " 3) re-build & run\n";
+							+ " app, and later on fixed the typo and re-deployed.<br/>"
+							+ "<br/>"
+							+ "To solve your problem:<br/>"
+							+ " 1) uninstall the app from your device,<br/>"
+							+ " 2) make sure to properly configure your key/secret pair within Scanner.java<br/>"
+							+ " 3) re-build & run<br/>";
 					MoodstocksError err = new MoodstocksError(errmsg,
 							MoodstocksError.Code.CREDMISMATCH);
 					err.log();
@@ -206,7 +206,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements
 		JSONObject obj = new JSONObject();
 
 		try {
-			obj.put(MESSAGE, "");
+			obj.put(MESSAGE, "Sync starts.");
 			obj.put(STATUS, 1);
 			obj.put(PROGRESS, 0);
 		} catch (JSONException e) {
@@ -225,7 +225,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements
 		JSONObject obj = new JSONObject();
 
 		try {
-			obj.put(MESSAGE, "");
+			obj.put(MESSAGE, "Sync completed.");
 			obj.put(STATUS, 3);
 			obj.put(PROGRESS, 100);
 		} catch (JSONException e) {
@@ -244,7 +244,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements
 		JSONObject obj = new JSONObject();
 
 		try {
-			obj.put(MESSAGE, "");
+			obj.put(MESSAGE, "Sync failed with error code " + e.getErrorCode());
 			obj.put(STATUS, 0);
 			obj.put(PROGRESS, 0);
 		} catch (JSONException e1) {
@@ -263,7 +263,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements
 		JSONObject obj = new JSONObject();
 
 		try {
-			obj.put(MESSAGE, "");
+			obj.put(MESSAGE, "Sync is progressing.");
 			obj.put(STATUS, 2);
 			obj.put(PROGRESS, 100 * (current / total));
 		} catch (JSONException e) {
