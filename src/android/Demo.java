@@ -60,6 +60,7 @@ public class Demo extends CordovaActivity {
   @Override
   public void init() {
     MoodstocksWebView webView = new MoodstocksWebView(this);
+    webView.setBackgroundColor(0x00000000);
     CordovaWebViewClient webViewClient;
 
     if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
