@@ -23,11 +23,12 @@
 
 package com.moodstocks.phonegap.demo;
 
+import org.apache.cordova.Config;
+import org.apache.cordova.CordovaActivity;
 import org.apache.cordova.CordovaChromeClient;
+import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebViewClient;
-import org.apache.cordova.DroidGap;
 import org.apache.cordova.IceCreamCordovaWebViewClient;
-import org.apache.cordova.api.CordovaPlugin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,21 +36,30 @@ import android.view.ViewManager;
 
 import com.moodstocks.phonegap.plugin.MoodstocksWebView;
 
-public class Demo extends DroidGap {
+/**
+ * This is a sample file of Cordova's main activity for PhoneGap 3.1+. DroidGap
+ * class is deprecated and replaced by CordovaActivity.
+ * <p>
+ * To make sure that our plugin runs normally, remember to replace the
+ * {@code super.init()} by {@code this.init()}.
+ *
+ */
+public class Demo extends CordovaActivity {
 
   private boolean scanActivityStarted = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    this.init();
     // Set by <content src="index.html" /> in config.xml
     super.loadUrl(Config.getStartUrl());
-    // super.loadUrl("file:///android_asset/www/index.html")
+    //super.loadUrl("file:///android_asset/www/index.html")
   }
 
   @Override
   public void init() {
-    MoodstocksWebView webView = new MoodstocksWebView(Demo.this);
+    MoodstocksWebView webView = new MoodstocksWebView(this);
     CordovaWebViewClient webViewClient;
 
     if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
