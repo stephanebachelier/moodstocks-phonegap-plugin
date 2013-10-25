@@ -84,7 +84,10 @@
     // NOTE: will be released when sync is over (please refer to MSHandler.m)
     MSHandler *syncHandler = [[MSHandler alloc] initWithPlugin:self callback:command.callbackId];
     [syncHandler sync];
-#if !__has_feature(objc_arc)
+
+#if __has_feature(objc_arc)
+    syncHandler = nil;
+#else
     [syncHandler release];
 #endif
 }
@@ -108,7 +111,10 @@
                                                          plugin:self];
 
     [self.viewController presentModalViewController:self.scanner animated:YES];
-#if !__has_feature(objc_arc)
+
+#if __has_feature(objc_arc)
+    scanHandler = nil;
+#else
     [scanHandler release];
 #endif
 }

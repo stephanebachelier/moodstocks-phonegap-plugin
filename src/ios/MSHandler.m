@@ -45,7 +45,6 @@
 #if !__has_feature(objc_arc)
     [super dealloc];
 #endif
-
     self.plugin = nil;
     self.callback = nil;
 }
@@ -55,7 +54,9 @@
     MSScanner *scanner = [MSScanner sharedInstance];
     if ([scanner isSyncing]) return;
     // Retain until the sync is finished (see below)
-#if !__has_feature(objc_arc)
+#if __has_feature(objc_arc)
+    CFRetain((__bridge CFTypeRef)(self));
+#else
     [self retain];
 #endif
     [scanner syncWithDelegate:self];
@@ -88,7 +89,9 @@
                          progress:100
                          callback:self.callback
                shouldKeepCallback:NO];
-#if !__has_feature(objc_arc)
+#if __has_feature(objc_arc)
+    CFRelease((__bridge const void*)self);
+#else
     [self release];
 #endif
 }
@@ -103,7 +106,9 @@
                              callback:self.callback
                    shouldKeepCallback:YES];
     }
-#if !__has_feature(objc_arc)
+#if __has_feature(objc_arc)
+    CFRelease((__bridge const void*)self);
+#else
     [self release];
 #endif
 }
