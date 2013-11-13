@@ -190,6 +190,7 @@ public class MoodstocksScanActivity extends Activity implements
 	@Override
 	public void onScanComplete(Result result) {
 		if (result != null) {
+			session.pause();
 			// result found, send to overlay
 			JSONObject obj = new JSONObject();
 			try {
