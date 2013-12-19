@@ -40,8 +40,7 @@ easy-to-use on-device image signatures synchronization.
 
 ## Step-by-Step User Guide
 
-Follow our [step-by-step user guide](http://moodstocks.com/documentation/user-guides/phonegap-plugin-guide/) to get Moodstocks PhoneGap
-plugin working in your project!
+Follow our [Getting Started Guide](https://moodstocks.com/documentation/getting-started/phonegap/) to get Moodstocks PhoneGap plugin working in your project!
 
 ## Copyright
 
