@@ -2,7 +2,7 @@
 
 Moodstocks PhoneGap plugins helps you to integrate Moodstocks SDK in your
 PhoneGap application. We provide iOS and Android version tested with PhoneGap
-v.2.3.0 ~ v.3.1.0.
+v.2.3.0 ~ v.3.3.0.
 
 ## Real-time on-device image recognition SDK
 
@@ -44,4 +44,4 @@ Follow our [Getting Started Guide](https://moodstocks.com/documentation/getting-
 
 ## Copyright
 
-Copyright (c) 2013 [Moodstocks SAS](http://www.moodstocks.com)
+Copyright (c) 2014 [Moodstocks SAS](http://www.moodstocks.com)
