@@ -104,7 +104,7 @@
                                status:0
                              progress:0
                              callback:self.callback
-                   shouldKeepCallback:YES];
+                   shouldKeepCallback:NO];
     }
 #if __has_feature(objc_arc)
     CFRelease((__bridge const void*)self);
