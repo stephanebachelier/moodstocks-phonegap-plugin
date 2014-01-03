@@ -103,7 +103,7 @@ public class MoodstocksPlugin extends CordovaPlugin implements
 			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	private void open(CallbackContext callbackContext) {
